@@ -1,0 +1,38 @@
+#!/bin/sh -x
+# base url
+GGL_URL='https://www.google.co.jp/'
+WIKI_URL='https://ja.wikipedia.org/wiki/'
+
+# analyze params
+BROWSER_CMD=w3m
+BROWSER_OPT="-F +3"  # enable frame page, set cursol pos
+QUERY=
+if [ $# -eq 0 ]; then
+    BASE_URL=$GGL_URL
+    AT_LINE="+5"
+else
+    BASE_URL=$GGL_URL'search?q='
+    case "$1" in
+        --) shift
+            ;;
+        d:) QUERY='define: '
+            shift
+            ;;
+        w:) BASE_URL=$WIKI_URL
+            AT_LINE=
+            shift
+            ;;
+    esac
+fi
+
+# make query & easy url encode
+QUERY=$QUERY`echo $@ | \
+    sed -e 's/%/%25/g' \
+        -e 's/#/%23/g' \
+        -e 's/+/%2B/g' \
+        -e 's/&/%26/g' \
+        -e 's/ /+/g'`
+
+# startup browser
+$BROWSER_CMD $BROWSER_OPT "$BASE_URL$QUERY"
+

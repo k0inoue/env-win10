@@ -1,0 +1,29 @@
+#!/bin/sh
+# [Usage] $0 {IMEsts}
+#   0: IME OFF
+#   1: IME ON
+if [ -f /proc/sys/fs/binfmt_misc/WSLInterop ]; then
+  # on WSL
+  if [ $1 -eq 1 ]; then
+    spzenhan.exe 1
+  else
+    spzenhan.exe 0
+  fi
+elif [ -z "$XAUTHORITY" ]; then
+  # on CUI (uim-fep)
+  UIM_SET_FILE=$UIM_FEP_SETMODE
+  [ ! -w "$UIM_SET_FILE" ] && exit 1
+  if [ $1 -eq 1 ]; then
+    echo 1 > $UIM_SET_FILE
+  else
+    echo 0 > $UIM_SET_FILE
+  fi
+else
+  # on GUI (fcitx)
+  if [ $1 -eq 1 ]; then
+    fcitx-remote -o
+  else
+    fcitx-remote -c
+  fi
+fi
+

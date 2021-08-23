@@ -1,0 +1,5 @@
+#!/bin/sh
+# [USAGE] $0 <message>
+toast64.exe --title "$1" --audio "default"
+
+

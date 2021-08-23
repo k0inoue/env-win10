@@ -12,7 +12,7 @@
 try {
   # Scoopのインストール確認
   get-command scoop -ErrorAction Stop
-} 
+}
 catch [Exception] {
   # Scoopのインストール
   Set-ExecutionPolicy RemoteSigned -scope CurrentUser
@@ -41,7 +41,7 @@ reg import $SCOOP_ROOT\apps\vscode\current\vscode-install-context.reg  # add con
 ##################################################
 # install applications
 ##################################################
-scoop install zenhan
+#scoop install zenhan
 scoop install slack
 scoop install neovim
 scoop install autohotkey
